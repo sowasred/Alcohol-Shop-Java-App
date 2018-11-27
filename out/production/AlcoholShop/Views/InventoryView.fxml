@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.InventoryViewController">
+   <children>
+      <SplitPane dividerPositions="0.6015037593984962" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="412.0">
+               <children>
+                  <ListView fx:id="" layoutX="8.0" layoutY="83.0" prefHeight="256.0" prefWidth="461.0" />
+                  <Label layoutX="90.0" layoutY="14.0" prefHeight="57.0" prefWidth="297.0" text="ALCOHOL SHOP" textFill="#977676">
+                     <font>
+                        <Font name="Bernard MT Condensed" size="48.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="comboBox" layoutX="154.0" layoutY="363.0" prefHeight="39.0" prefWidth="240.0" />
+                  <Label layoutX="9.0" layoutY="363.0" prefHeight="39.0" prefWidth="162.0" text="Categories">
+                     <font>
+                        <Font name="Bernard MT Condensed" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="428.0" prefHeight="29.0" prefWidth="162.0" text="Sort Order">
+                     <font>
+                        <Font name="Bernard MT Condensed" size="24.0" />
+                     </font>
+                  </Label>
+                  <RadioButton fx:id="radioButtonPhlow" layoutX="154.0" layoutY="432.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="184.0" text="Price high to low" />
+                  <RadioButton fx:id="radioButtonPlhigh" layoutX="154.0" layoutY="474.0" mnemonicParsing="false" text="Price low to high" />
+                  <RadioButton fx:id="radioButtonAscending" layoutX="154.0" layoutY="511.0" mnemonicParsing="false" text="Alphabetical Order(Ascending)" />
+                  <RadioButton fx:id="radioButtonDescending" layoutX="154.0" layoutY="550.0" mnemonicParsing="false" text="Alphabetical Order(Descending)" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="403.0">
+               <children>
+                  <ImageView fx:id="" fitHeight="247.0" fitWidth="279.0" layoutX="17.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="" layoutX="104.0" layoutY="299.0" mnemonicParsing="false" text="Sell 1 Unit" />
+                  <Label layoutX="15.0" layoutY="378.0" text="Total Number In Stock:">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="" layoutX="17.0" layoutY="412.0" prefHeight="27.0" prefWidth="184.0" />
+                  <Label layoutX="17.0" layoutY="510.0" prefHeight="27.0" prefWidth="225.0" text="Total Inventory Value:">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="" layoutX="17.0" layoutY="544.0" prefHeight="27.0" prefWidth="184.0" />
+                  <Label layoutX="14.0" layoutY="449.0" text="Price:">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="" layoutX="69.0" layoutY="449.0" prefHeight="27.0" prefWidth="136.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

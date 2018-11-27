@@ -11,16 +11,17 @@ public class Product {
     private String description;
     private int numberOfStock;
     private double price;
-    private File imageFile;
+    private String imageFile;
 
 
-    public Product(String productName, String description, int numberOfStock, double price, File imageFile) {
+    public Product(String productName, String description, int numberOfStock, double price, String imageFile) {
         setProductName(productName);
         setDescription(description);
         setNumberOfStock(numberOfStock);
         setPrice(price);
         setImageFile(imageFile);
     }
+
 
     /**
      * returns product name
@@ -108,7 +109,7 @@ public class Product {
      */
 
     public void setPrice(double price) {
-        if (this.price > 0)
+        if (this.price >= 0)
             this.price = price;
         else {
             AlertController.alertError("Price cannot be 0 or minus value.");
@@ -121,7 +122,7 @@ public class Product {
      *
      * @return File
      */
-    public File getImageFile() {
+    public String getImageFile() {
         return imageFile;
     }
 
@@ -131,7 +132,7 @@ public class Product {
      * @param imageFile File
      */
 
-    public void setImageFile(File imageFile) {
+    public void setImageFile(String imageFile) {
         this.imageFile = imageFile;
     }
 
@@ -146,6 +147,7 @@ public class Product {
 
     } else
         AlertController.alertError("There is no available item to sell.");
+        throw new IllegalArgumentException("There is no available item to sell.");
     }
 
     /**
