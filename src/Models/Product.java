@@ -23,41 +23,33 @@ public class Product {
         setImageFile(imageFile);
         setCategory(category);
     }
-
     /**
      * returns product image
-     *
      * @return File
      */
-
     public File getImageFile() {
         return imageFile;
     }
 
     /**
      * Sets the product image
-     *
      * @param imageFile File
      */
-
     public void setImageFile(File imageFile) {
         this.imageFile = imageFile;
     }
     /**
      * returns product category
-     *
      * @return String
      */
-
     public String getCategory() {
         return category;
     }
+
     /**
      * Sets the product category
-     *
      * @param category String
      */
-
     public void setCategory(String category) {
         this.category = category;
     }
@@ -68,7 +60,6 @@ public class Product {
 
     /**
      * returns product name
-     *
      * @return String
      */
     public String getProductName() {
@@ -77,7 +68,6 @@ public class Product {
 
     /**
      * Sets the product name
-     *
      * @param productName String
      */
     public void setProductName(String productName) {
@@ -91,7 +81,6 @@ public class Product {
 
     /**
      * returns description of product
-     *
      * @return String
      */
     public String getDescription() {
@@ -100,7 +89,6 @@ public class Product {
 
     /**
      * Sets the product description
-     *
      * @param description String
      */
 
@@ -115,7 +103,6 @@ public class Product {
 
     /**
      * returns number of stock for each product
-     *
      * @return Int
      */
     public int getNumberOfStock() {
@@ -124,7 +111,6 @@ public class Product {
 
     /**
      * Sets the number of product stock
-     *
      * @param numberOfStock int
      */
     public void setNumberOfStock(int numberOfStock) {
@@ -135,10 +121,8 @@ public class Product {
             throw new IllegalArgumentException("Number Of product stock is supposed to be filled according to restriction.");
         }
     }
-
     /**
      * returns product price
-     *
      * @return Double
      */
     public double getPrice() {
@@ -147,7 +131,6 @@ public class Product {
 
     /**
      * Sets the product price
-     *
      * @param price double
      */
 
@@ -159,28 +142,15 @@ public class Product {
             throw new IllegalArgumentException("Product price is supposed to be filled according to restriction.");
         }
     }
-
     /**
-     *
-     *returns Decreasing the number of stock by 1 for each selling
-     * @return numberOfStock
-     */
-    public void sellUnit() {
-    if(this.numberOfStock > 0 ){
-         this.numberOfStock--;
-
-    } else
-        AlertController.alertError("There is no available item to sell.");
-        throw new IllegalArgumentException("There is no available item to sell.");
-    }
-
-    /**
-     *
      *returns new ordered String defined by Product Object Properties
      * @return String
      */
     @Override
     public String toString(){
-        return "Product Name:" + productName + " Units In Stock:" + numberOfStock + " Price:" + price + "$";
+
+
+        return String.format("%s \tNumber Of Stock:%d \t%.2f$", productName,numberOfStock,price);
+
     }
 }
