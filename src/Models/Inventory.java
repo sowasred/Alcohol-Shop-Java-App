@@ -1,5 +1,7 @@
+/**
+ * @author Ozan Muldur
+ * */
 package Models;
-
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;

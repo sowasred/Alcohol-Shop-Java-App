@@ -1,3 +1,6 @@
+/**
+ * @author Ozan Muldur
+ * */
 package Controllers;
 
 import Models.Inventory;
