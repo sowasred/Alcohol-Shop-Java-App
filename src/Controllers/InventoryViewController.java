@@ -5,7 +5,10 @@ package Controllers;
 
 import Models.Inventory;
 import Models.Product;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -13,13 +16,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 import static Models.Inventory.getAllProducts;
 
-public class InventoryViewController implements Initializable {
+public class InventoryViewController implements Initializable{
 
     @FXML private ListView<Product> listView;
     @FXML private ImageView imageView;
@@ -56,6 +65,8 @@ public class InventoryViewController implements Initializable {
              //   Remove all items on the table before load new items regarding category
              listView.getItems().removeAll(Inventory.getAllProducts());
                 listView.getItems().addAll(Inventory.getProductsWCategory(newValue));
+                calculateCategoryValue(listView.getItems());
+
 
             }
     );
@@ -64,15 +75,72 @@ public class InventoryViewController implements Initializable {
         // It makes each radiobutton to select seperately which means when we select one radio button it will deselect others
         buttonGroup.getToggles().addAll(radioButtonPhlow,radioButtonPlhigh,radioButtonAscending,radioButtonDescending);
 
-        // As a default radio button that sorts items according to price high to low is selected
-        radioButtonPhlow.setSelected(true);
         calculateInventoryValue();
         setImageView();
+
+        buttonGroup.selectedToggleProperty().addListener((p,o,n) -> {
+            if(p.getValue() == radioButtonPlhigh || p.getValue() == radioButtonPhlow){
+                sortCategoryPriceLowToHigh(listView.getItems());
+            }
+            if(p.getValue() == radioButtonAscending || p.getValue() == radioButtonDescending){
+                sortCategoryToName(listView.getItems());
+            }
+        });
+
+        // As a default radio button that sorts items according to price high to low is selected
+        radioButtonPhlow.setSelected(true);
+
+
+        //add allow listener
 
 
 
     }
 
+    // Initializer finishes here
+
+    public void sortCategoryToName(ObservableList<Product> olist) {
+        List<Product> list = olist.stream().collect(Collectors.toList());
+        if (radioButtonAscending.isSelected()) {
+            list.sort(Comparator.comparing(a -> a.getProductName()));
+            ObservableList<Product> oolist = FXCollections.observableArrayList(list);
+            listView.setItems(oolist);
+        }
+        if (radioButtonDescending.isSelected()) {
+            ObservableList<Product> oolist2 = FXCollections.observableArrayList(list.stream().sorted(Comparator.comparing(Product::getProductName).reversed()).collect(Collectors.toList()));
+            listView.setItems(oolist2);
+        }
+        listView.refresh();
+    }
+
+
+
+    public void sortCategoryPriceLowToHigh(ObservableList<Product> olist){
+        List<Product> list = olist.stream().collect(Collectors.toList());
+        if(radioButtonPlhigh.isSelected()){
+            list.sort(Comparator.comparing(a -> a.getPrice()));
+            ObservableList<Product> oolist = FXCollections.observableArrayList(list);
+            listView.setItems(oolist);
+            }
+        if(radioButtonPhlow.isSelected()){
+            ObservableList<Product> oolist2 = FXCollections.observableArrayList(list.stream().sorted(Comparator.comparing(Product::getPrice).reversed()).collect(Collectors.toList()));
+            listView.setItems(oolist2);
+        }
+        listView.refresh();
+    }
+
+    public void calculateCategoryValue(ObservableList<Product> products){
+        double categoryValue = 0;
+            for (Product product: products){
+
+                double price =product.getPrice();
+                int units = product.getNumberOfStock();
+                categoryValue += (units *price);
+            }
+            String str = String.format("$%.2f", categoryValue);
+            price.setText(str);
+
+    }
     // Create an Method for showing Image in ImageView
     public void setImageView(){
 
@@ -93,6 +161,10 @@ public class InventoryViewController implements Initializable {
 
             int numberStrock = listView.getSelectionModel().getSelectedItem().getNumberOfStock();
             --numberStrock;
+            listView.getSelectionModel().getSelectedItem().setNumberOfStock(numberStrock);
+            listView.refresh();
+            calculateInventoryValue();
+            calculateCategoryValue(listView.getItems());
         } else
             AlertController.alertError("There is no available item to sell.");
         throw new IllegalArgumentException("There is no available item to sell.");
@@ -112,6 +184,7 @@ public class InventoryViewController implements Initializable {
        calculatedInventoryValue.setText("$" +(Double.toString(total)));
 
     }
+
 
 
 }

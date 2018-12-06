@@ -20,11 +20,6 @@ import java.util.stream.Collectors;
 public class Inventory{
 
     private static TreeMap<String, LinkedList<Product>> alcoholshop;
-    public static void main(String[] args)
-    {
-
-
-    }
 
     // Get products categories with passing category name in the method
     public static LinkedList<Product> getProductsWCategory(String category){
