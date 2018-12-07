@@ -43,6 +43,7 @@ public class InventoryViewController implements Initializable{
     @FXML private ImageView imageView;
     @FXML private Label price;
     @FXML private Label calculatedInventoryValue;
+    @FXML private Label description;
     @FXML private ComboBox<String> comboBox;
     @FXML private RadioButton radioButtonPhlow;
     @FXML private RadioButton radioButtonPlhigh;
@@ -50,36 +51,40 @@ public class InventoryViewController implements Initializable{
     @FXML private RadioButton radioButtonDescending;
     public ToggleGroup buttonGroup = new ToggleGroup();
 
+    /**
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
        // ComboBox<String> comboBox = new ComboBox<String>();
         comboBox.setPromptText("Select Category");
 
-
         //First we need to populate the Treemap
         Inventory.InitializeCategories();
         getAllProducts();
-      ObservableList<String> content = Inventory.getCategoryNames();
 
-      for(String category : content)
-        comboBox.getItems().add(category);
+        // For Loop is created to put categories from created ObservableList<String>
+        ObservableList<String> content = Inventory.getCategoryNames();
 
+        // For Loop is created to put categories from created ObservableList<String>
+          for(String category : content)
+            comboBox.getItems().add(category);
+
+        // To put all products in inventory to list view, getAllProducts() method is called
         listView.getItems().addAll(Inventory.getAllProducts());
 
-
-
+        // To set our image according to selection in the list view, event listener is added to listview
         listView.getSelectionModel().selectedItemProperty().addListener(
 
                 (observable, oldValue, newValue) ->{
                     if(newValue != null){
                    setImageView(newValue.getImageFile().toPath());
-
+                   setDescriptionLabel(newValue);
                     }
                 }
-
-
         );
-
+        // To get our products according to their category, event listener is added to combobox
         comboBox.getSelectionModel().selectedItemProperty().addListener(
 
             (observable, oldValue, newValue) -> {
@@ -92,21 +97,13 @@ public class InventoryViewController implements Initializable{
             }
     );
 
-
         // It makes each radiobutton to select seperately which means when we select one radio button it will deselect others
         buttonGroup.getToggles().addAll(radioButtonPhlow,radioButtonPlhigh,radioButtonAscending,radioButtonDescending);
 
+        // We call the method to calculate whole inventory value
         calculateInventoryValue();
 
-/*        if(listView.getSelectionModel() != null){
-            setImageView(listView.getSelectionModel().getSelectedItem().getProductName());
-        }*/
-/*        listView.getSelectionModel().selectionModeProperty()
-                .addListener((changed, oldVal, newVal) -> imageView.setImage(new Image("file:./src/Images/" + newVal.name()+ ".jpeg" )));*/
-
-
-
-
+        // To sort our products in list view, event listener is added to toggle group
         buttonGroup.selectedToggleProperty().addListener((p,o,n) -> {
             if(p.getValue() == radioButtonPlhigh || p.getValue() == radioButtonPhlow){
                 sortCategoryPriceLowToHigh(listView.getItems());
@@ -119,11 +116,15 @@ public class InventoryViewController implements Initializable{
         // As a default radio button that sorts items according to price high to low is selected
         radioButtonPhlow.setSelected(true);
 
-        //add allow listener
+
     }
 
     // Initializer finishes here
 
+    /**
+     * Sorting Products in the list according to their names (either ascending or descending) regards to selected option
+     * @param olist ObservableList<Product>
+     */
     public void sortCategoryToName(ObservableList<Product> olist) {
         List<Product> list = olist.stream().collect(Collectors.toList());
         if (radioButtonAscending.isSelected()) {
@@ -139,7 +140,10 @@ public class InventoryViewController implements Initializable{
     }
 
 
-
+    /**
+     * Sorting Products in the list according to price (either ascending or descending) regards to selected option
+     * @param olist ObservableList<Product>
+     */
     public void sortCategoryPriceLowToHigh(ObservableList<Product> olist){
         List<Product> list = olist.stream().collect(Collectors.toList());
         if(radioButtonPlhigh.isSelected()){
@@ -154,6 +158,10 @@ public class InventoryViewController implements Initializable{
         listView.refresh();
     }
 
+    /**
+     * Calculate total category value according to selected category
+     * @param products ObservableList<Product>
+     */
     public void calculateCategoryValue(ObservableList<Product> products){
         double categoryValue = 0;
             for (Product product: products){
@@ -166,14 +174,19 @@ public class InventoryViewController implements Initializable{
             price.setText(str);
 
     }
-
-
-
-    // Create an Method for showing Image in ImageView
-
+    /**
+     * Create an Method for showing Image in ImageView
+     * @param path
+     */
     public void setImageView(Path path){
         Image img = new Image(path.toString());
         imageView.setImage(img);
+    }
+
+    public void setDescriptionLabel(Product product){
+        String str = product.getDescription();
+        description.setText(str);
+
     }
 
 
