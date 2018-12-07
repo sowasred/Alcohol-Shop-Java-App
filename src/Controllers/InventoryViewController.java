@@ -5,34 +5,42 @@ package Controllers;
 
 import Models.Inventory;
 import Models.Product;
+import com.sun.javafx.scene.control.skin.LabeledText;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.GridPane;
 
 
+import javax.imageio.ImageIO;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
 import static Models.Inventory.getAllProducts;
+import static java.lang.System.*;
 
 public class InventoryViewController implements Initializable{
 
     @FXML private ListView<Product> listView;
     @FXML private ImageView imageView;
-    @FXML private Label totalNumberStock;
     @FXML private Label price;
     @FXML private Label calculatedInventoryValue;
     @FXML private ComboBox<String> comboBox;
@@ -56,10 +64,23 @@ public class InventoryViewController implements Initializable{
       for(String category : content)
         comboBox.getItems().add(category);
 
-     listView.getItems().addAll(Inventory.getAllProducts());
+        listView.getItems().addAll(Inventory.getAllProducts());
 
 
-    comboBox.getSelectionModel().selectedItemProperty().addListener(
+
+        listView.getSelectionModel().selectedItemProperty().addListener(
+
+                (observable, oldValue, newValue) ->{
+                    if(newValue != null){
+                   setImageView(newValue.getImageFile().toPath());
+
+                    }
+                }
+
+
+        );
+
+        comboBox.getSelectionModel().selectedItemProperty().addListener(
 
             (observable, oldValue, newValue) -> {
              //   Remove all items on the table before load new items regarding category
@@ -76,7 +97,15 @@ public class InventoryViewController implements Initializable{
         buttonGroup.getToggles().addAll(radioButtonPhlow,radioButtonPlhigh,radioButtonAscending,radioButtonDescending);
 
         calculateInventoryValue();
-        setImageView();
+
+/*        if(listView.getSelectionModel() != null){
+            setImageView(listView.getSelectionModel().getSelectedItem().getProductName());
+        }*/
+/*        listView.getSelectionModel().selectionModeProperty()
+                .addListener((changed, oldVal, newVal) -> imageView.setImage(new Image("file:./src/Images/" + newVal.name()+ ".jpeg" )));*/
+
+
+
 
         buttonGroup.selectedToggleProperty().addListener((p,o,n) -> {
             if(p.getValue() == radioButtonPlhigh || p.getValue() == radioButtonPhlow){
@@ -90,11 +119,7 @@ public class InventoryViewController implements Initializable{
         // As a default radio button that sorts items according to price high to low is selected
         radioButtonPhlow.setSelected(true);
 
-
         //add allow listener
-
-
-
     }
 
     // Initializer finishes here
@@ -141,15 +166,17 @@ public class InventoryViewController implements Initializable{
             price.setText(str);
 
     }
+
+
+
     // Create an Method for showing Image in ImageView
-    public void setImageView(){
 
-        /*System.out.println(listView.getSelectionModel().getSelectedItem().getImageFile().getName());*/
-     //  Image image = new Image(listView.getSelectionModel().getSelectedItem().getImageFile().toString());
-     //   imageView.setImage(image);
-
-      //  price.setText(Double.toString(listView.getSelectionModel().getSelectedItem().getPrice()));
+    public void setImageView(Path path){
+        Image img = new Image(path.toString());
+        imageView.setImage(img);
     }
+
+
 
     /**
      *

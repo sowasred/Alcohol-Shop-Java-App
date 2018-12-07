@@ -31,12 +31,13 @@ public class Inventory{
     public static void InitializeCategories()
     {
         alcoholshop = new TreeMap<>();
-        addProduct("Bud Light", "Light golden colour; light malt & hops.", 123, 2.6, new File("bud.jpeg"),"Beers");
+        addProduct("Bud", "Light golden colour; light malt & hops.", 123, 2.6, new File("/Images/bud.jpg"),"Beers");
         addProduct("Gosser", "Pale yelisttow mber colour with a fine mousse, perfection.", 100, 2.15,new File("/Images/gosser.jpeg"),"Beers" );
         addProduct("Ruffino Chianti", "Purple&red colour; aromas and flavours of red fruits.", 125, 14.95,new File("/Images/chianti.jpeg"),"Wines");
         addProduct("Fontana Di Papa Red", "Pale garnet almost rose colour; light strawberry.", 110, 19.15, new File("/Images/fontana.jpeg"),"Wines");
         addProduct("Jack Daniel's Rye", "This whiskey, made with a high percentage of alcohol.", 87, 36.95,new File("/Images/jack.jpeg"),"Whiskeys");
         addProduct("Crown Royal Whisky", "Aging in both new and seasoned white oak barrels.", 56, 29.95,new File("/Images/crown.jpeg"),"Whiskeys" );
+        addProduct("Efes", "Turkish taste of Beer.", 2, 3,new File("/Images/efes.jpg"),"Beers" );
 
     }
     // Getting Category Names for putting in ComboBox
