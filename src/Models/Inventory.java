@@ -3,19 +3,13 @@
  * */
 package Models;
 
-import javafx.application.Application;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import sun.reflect.generics.tree.Tree;
-
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
+
 
 public class Inventory{
 
@@ -27,7 +21,7 @@ public class Inventory{
      * @param category String
      * @return LinkedList<Product>
      */
-    //
+
     public static LinkedList<Product> getProductsWCategory(String category){
 
         return alcoholshop.get(category);
@@ -37,7 +31,7 @@ public class Inventory{
      * Initiliaze the Treemap with category names as keys and LinkedList<Product> as values
      * Basically Load our inventory
      */
-    // Initializing Products and Categories
+
     public static void InitializeCategories()
     {
         alcoholshop = new TreeMap<>();
@@ -48,6 +42,7 @@ public class Inventory{
         addProduct("Jack Daniel's Rye", "This whiskey, made with a high percentage of alcohol.", 87, 36.95,new File("/Images/jack.jpeg"),"Whiskeys");
         addProduct("Crown Royal Whisky", "Aging in both new and seasoned white oak barrels.", 56, 29.95,new File("/Images/crown.jpeg"),"Whiskeys" );
         addProduct("Efes", "Turkish taste of Beer.", 2, 3,new File("/Images/efes.jpg"),"Beers" );
+
 
     }
 

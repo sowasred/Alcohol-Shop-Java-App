@@ -2,40 +2,28 @@
  * @author Ozan Muldur
  * */
 package Controllers;
-
 import Models.Inventory;
 import Models.Product;
-import com.sun.javafx.scene.control.skin.LabeledText;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
-
-import javax.imageio.ImageIO;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
-
 import static Models.Inventory.getAllProducts;
-import static java.lang.System.*;
 
 public class InventoryViewController implements Initializable{
 
@@ -49,6 +37,7 @@ public class InventoryViewController implements Initializable{
     @FXML private RadioButton radioButtonPlhigh;
     @FXML private RadioButton radioButtonAscending;
     @FXML private RadioButton radioButtonDescending;
+    @FXML private Button createProB;
     public ToggleGroup buttonGroup = new ToggleGroup();
 
     /**
@@ -139,7 +128,6 @@ public class InventoryViewController implements Initializable{
         listView.refresh();
     }
 
-
     /**
      * Sorting Products in the list according to price (either ascending or descending) regards to selected option
      * @param olist ObservableList<Product>
@@ -223,6 +211,19 @@ public class InventoryViewController implements Initializable{
         }
        calculatedInventoryValue.setText("$" +(Double.toString(total)));
 
+    }
+
+    /**
+     * Runs after Create button is clicked
+     */
+    public void onCreateNewBtnPushed(ActionEvent event) throws IOException {
+        Parent createProductView = FXMLLoader.load(getClass().getResource("/Views/CreateProduct.fxml"));
+
+        Scene createProductScene = new Scene(createProductView);
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(createProductScene);
+        window.show();
     }
 
 

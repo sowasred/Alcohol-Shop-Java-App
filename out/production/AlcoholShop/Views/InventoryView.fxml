@@ -40,7 +40,7 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="403.0">
                <children>
                   <ImageView fx:id="imageView" fitHeight="199.0" fitWidth="279.0" layoutX="17.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="" layoutX="104.0" layoutY="368.0" mnemonicParsing="false" onAction="#sellUnit" text="Sell 1 Unit" />
+                  <Button fx:id="" layoutX="24.0" layoutY="377.0" mnemonicParsing="false" onAction="#sellUnit" text="Sell 1 Unit" />
                   <Label layoutX="47.0" layoutY="503.0" prefHeight="27.0" prefWidth="200.0" text="Total Inventory Value:">
                      <font>
                         <Font name="System Bold" size="18.0" />
@@ -60,6 +60,7 @@
                         <Font name="Arial Black" size="22.0" />
                      </font></Label>
                   <Label fx:id="description" layoutX="14.0" layoutY="226.0" prefHeight="126.0" prefWidth="286.0" />
+                  <Button fx:id="createProB" layoutX="157.0" layoutY="377.0" mnemonicParsing="false" onAction="#onCreateNewBtnPushed" text="Create Product" />
                </children>
             </AnchorPane>
         </items>
