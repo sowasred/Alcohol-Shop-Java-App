@@ -46,7 +46,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="calculatedInventoryValue" layoutX="47.0" layoutY="537.0" prefHeight="27.0" prefWidth="184.0">
+                  <Label fx:id="calculatedinventoryValue" layoutX="47.0" layoutY="537.0" prefHeight="27.0" prefWidth="184.0">
                      <font>
                         <Font name="Arial Black" size="22.0" />
                      </font></Label>
