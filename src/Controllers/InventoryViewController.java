@@ -204,13 +204,11 @@ public class InventoryViewController implements Initializable{
      * And set the label as a calculation result
      */
     public void calculateinventoryValue(){
-        double total = 0;
-        for (Product product : inventory.getAllProducts()){
-            double productPrice = product.getPrice();
-            int stockNumber = product.getNumberOfStock();
-            total += productPrice * stockNumber;
-        }
-       calculatedinventoryValue.setText("$" +(Double.toString(total)));
+        double totalInventory = inventory.getAllProducts()
+                .stream()
+                .mapToDouble(a -> a.getPrice() * a.getPrice())
+                .sum();
+        calculatedinventoryValue.setText(String.valueOf(totalInventory));
 
     }
 
