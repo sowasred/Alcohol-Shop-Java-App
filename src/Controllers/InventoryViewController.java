@@ -23,14 +23,13 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
-import static Models.Inventory.getAllProducts;
 
 public class InventoryViewController implements Initializable{
 
     @FXML private ListView<Product> listView;
     @FXML private ImageView imageView;
     @FXML private Label price;
-    @FXML private Label calculatedInventoryValue;
+    @FXML private Label calculatedinventoryValue;
     @FXML private Label description;
     @FXML private ComboBox<String> comboBox;
     @FXML private RadioButton radioButtonPhlow;
@@ -39,6 +38,7 @@ public class InventoryViewController implements Initializable{
     @FXML private RadioButton radioButtonDescending;
     @FXML private Button createProB;
     public ToggleGroup buttonGroup = new ToggleGroup();
+    private Inventory inventory;
 
     /**
      * @param location
@@ -46,22 +46,23 @@ public class InventoryViewController implements Initializable{
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        inventory = new Inventory();
        // ComboBox<String> comboBox = new ComboBox<String>();
         comboBox.setPromptText("Select Category");
 
         //First we need to populate the Treemap
-        Inventory.InitializeCategories();
-        getAllProducts();
+        inventory.InitializeCategories();
+        inventory.getAllProducts();
 
         // For Loop is created to put categories from created ObservableList<String>
-        ObservableList<String> content = Inventory.getCategoryNames();
+        ObservableList<String> content = inventory.getCategoryNames();
 
         // For Loop is created to put categories from created ObservableList<String>
           for(String category : content)
             comboBox.getItems().add(category);
 
         // To put all products in inventory to list view, getAllProducts() method is called
-        listView.getItems().addAll(Inventory.getAllProducts());
+        listView.getItems().addAll(inventory.getAllProducts());
 
         // To set our image according to selection in the list view, event listener is added to listview
         listView.getSelectionModel().selectedItemProperty().addListener(
@@ -78,8 +79,8 @@ public class InventoryViewController implements Initializable{
 
             (observable, oldValue, newValue) -> {
              //   Remove all items on the table before load new items regarding category
-             listView.getItems().removeAll(Inventory.getAllProducts());
-                listView.getItems().addAll(Inventory.getProductsWCategory(newValue));
+             listView.getItems().removeAll(inventory.getAllProducts());
+                listView.getItems().addAll(inventory.getProductsWCategory(newValue));
                 calculateCategoryValue(listView.getItems());
 
 
@@ -90,7 +91,7 @@ public class InventoryViewController implements Initializable{
         buttonGroup.getToggles().addAll(radioButtonPhlow,radioButtonPlhigh,radioButtonAscending,radioButtonDescending);
 
         // We call the method to calculate whole inventory value
-        calculateInventoryValue();
+       calculateinventoryValue();
 
         // To sort our products in list view, event listener is added to toggle group
         buttonGroup.selectedToggleProperty().addListener((p,o,n) -> {
@@ -191,7 +192,7 @@ public class InventoryViewController implements Initializable{
             --numberStrock;
             listView.getSelectionModel().getSelectedItem().setNumberOfStock(numberStrock);
             listView.refresh();
-            calculateInventoryValue();
+            calculateinventoryValue();
             calculateCategoryValue(listView.getItems());
         } else
             AlertController.alertError("There is no available item to sell.");
@@ -199,17 +200,17 @@ public class InventoryViewController implements Initializable{
     }
     /**
      *
-     * Calculate total Inventory for whole alcoholshop
+     * Calculate total inventory for whole alcoholshop
      * And set the label as a calculation result
      */
-    public void calculateInventoryValue(){
+    public void calculateinventoryValue(){
         double total = 0;
-        for (Product product : Inventory.getAllProducts()){
+        for (Product product : inventory.getAllProducts()){
             double productPrice = product.getPrice();
             int stockNumber = product.getNumberOfStock();
             total += productPrice * stockNumber;
         }
-       calculatedInventoryValue.setText("$" +(Double.toString(total)));
+       calculatedinventoryValue.setText("$" +(Double.toString(total)));
 
     }
 

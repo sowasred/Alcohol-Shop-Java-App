@@ -14,7 +14,7 @@ import java.util.stream.Collector;
 public class Inventory{
 
 
-    private static TreeMap<String, LinkedList<Product>> alcoholshop;
+    private TreeMap<String, LinkedList<Product>> alcoholshop;
 
     /**
      * Get products categories with passing category name in the method
@@ -22,7 +22,7 @@ public class Inventory{
      * @return LinkedList<Product>
      */
 
-    public static LinkedList<Product> getProductsWCategory(String category){
+    public LinkedList<Product> getProductsWCategory(String category){
 
         return alcoholshop.get(category);
     }
@@ -32,7 +32,7 @@ public class Inventory{
      * Basically Load our inventory
      */
 
-    public static void InitializeCategories()
+    public void InitializeCategories()
     {
         alcoholshop = new TreeMap<>();
         addProduct("Bud", "Light golden colour; light malt & hops.", 123, 2.6, new File("/Images/bud.jpg"),"Beers");
@@ -52,7 +52,7 @@ public class Inventory{
      *
      */
 
-    public static ObservableList<String> getCategoryNames(){
+    public ObservableList<String> getCategoryNames(){
 
         Set<String> keys = alcoholshop.keySet();
             ObservableList<String> categoryList =  keys.stream().sorted().collect(Collector.of(
@@ -68,7 +68,7 @@ public class Inventory{
      *
      */
 
-    public static LinkedList<Product> getAllProducts() {
+    public LinkedList<Product> getAllProducts() {
 
         LinkedList<Product> list = new LinkedList<>();
         for (String key: alcoholshop.keySet())
@@ -89,7 +89,7 @@ public class Inventory{
      * @param category      String
      */
 
-    public static void addProduct(String productName, String description, int numberOfStock, double price, File imageFile, String category)
+    public void addProduct(String productName, String description, int numberOfStock, double price, File imageFile, String category)
     {
         Product newProduct = new Product(productName, description, numberOfStock,price,imageFile,category);
         String categoryName = category;

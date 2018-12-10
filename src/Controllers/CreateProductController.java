@@ -30,7 +30,7 @@ public class CreateProductController implements Initializable {
     @FXML
     Button saveButton;
     @FXML Button cancelButton;
-
+    Inventory inventory;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -42,7 +42,7 @@ public class CreateProductController implements Initializable {
      */
     public void saveButtonPushed(){
 
-        Inventory.addProduct(productName.getText(), productDescription.getText(),Integer.valueOf(numberOfStock.getText()), Double.valueOf(productPrice.getText()),new File("/Images.default.jpg"), category.getText());
+        inventory.addProduct(productName.getText(), productDescription.getText(),Integer.valueOf(numberOfStock.getText()), Double.valueOf(productPrice.getText()),new File("/Images.default.jpg"), category.getText());
         state.setText("Success!");
 
     }
