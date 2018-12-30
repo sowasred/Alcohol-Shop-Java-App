@@ -154,7 +154,7 @@ public class Product {
     public String toString(){
 
 
-        return String.format("%s \tNumber Of Stock:%d \t%.2f$", productName,numberOfStock,price);
+        return String.format("%s \t\tNumber Of Stock:%d \t\t\t%.2f$", productName,numberOfStock,price);
 
     }
 }

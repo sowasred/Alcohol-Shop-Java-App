@@ -24,13 +24,15 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class InventoryViewController implements Initializable{
+public class InventoryViewController implements Initializable, Preloader{
 
     @FXML private ListView<Product> listView;
     @FXML private ImageView imageView;
     @FXML private Label price;
     @FXML private Label calculatedinventoryValue;
     @FXML private Label description;
+    @FXML private Label stockNumber;
+    @FXML private Label unitprice;
     @FXML private ComboBox<String> comboBox;
     @FXML private RadioButton radioButtonPhlow;
     @FXML private RadioButton radioButtonPlhigh;
@@ -38,7 +40,8 @@ public class InventoryViewController implements Initializable{
     @FXML private RadioButton radioButtonDescending;
     @FXML private Button createProB;
     public ToggleGroup buttonGroup = new ToggleGroup();
-    private Inventory inventory;
+    private static Inventory inventory;
+
 
     /**
      * @param location
@@ -46,65 +49,73 @@ public class InventoryViewController implements Initializable{
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        inventory = new Inventory();
-       // ComboBox<String> comboBox = new ComboBox<String>();
+
+        // ComboBox<String> comboBox = new ComboBox<String>();
         comboBox.setPromptText("Select Category");
 
-        //First we need to populate the Treemap
-        inventory.InitializeCategories();
-        inventory.getAllProducts();
+        if (inventory == null) {
+             inventory = new Inventory();
 
-        // For Loop is created to put categories from created ObservableList<String>
-        ObservableList<String> content = inventory.getCategoryNames();
 
-        // For Loop is created to put categories from created ObservableList<String>
-          for(String category : content)
-            comboBox.getItems().add(category);
 
-        // To put all products in inventory to list view, getAllProducts() method is called
-        listView.getItems().addAll(inventory.getAllProducts());
+            //First we need to populate the Treemap
+            inventory.InitializeCategories();
+        }
 
-        // To set our image according to selection in the list view, event listener is added to listview
-        listView.getSelectionModel().selectedItemProperty().addListener(
 
-                (observable, oldValue, newValue) ->{
-                    if(newValue != null){
-                   setImageView(newValue.getImageFile().toPath());
-                   setDescriptionLabel(newValue);
+            // For Loop is created to put categories from created ObservableList<String>
+            ObservableList<String> content = inventory.getCategoryNames();
+
+            // For Loop is created to put categories from created ObservableList<String>
+            for (String category : content)
+                comboBox.getItems().add(category);
+
+            // To put all products in inventory to list view, getAllProducts() method is called
+            listView.getItems().addAll(inventory.getAllProducts());
+
+            // To set our image according to selection in the list view, event listener is added to listview
+            listView.getSelectionModel().selectedItemProperty().addListener(
+
+                    (observable, oldValue, newValue) -> {
+                        if (newValue != null) {
+                            stockNumber.setText(String.valueOf(newValue.getNumberOfStock()));
+                            setImageView(newValue.getImageFile().toPath());
+                            setDescriptionLabel(newValue);
+                        }
                     }
+            );
+            // To get our products according to their category, event listener is added to combobox
+            comboBox.getSelectionModel().selectedItemProperty().addListener(
+
+                    (observable, oldValue, newValue) -> {
+                        //   Remove all items on the table before load new items regarding category
+                        listView.getItems().removeAll(inventory.getAllProducts());
+                        listView.getItems().addAll(inventory.getProductsWCategory(newValue));
+                        calculateCategoryValue(listView.getItems());
+
+
+                    }
+            );
+
+            // It makes each radiobutton to select seperately which means when we select one radio button it will deselect others
+            buttonGroup.getToggles().addAll(radioButtonPhlow, radioButtonPlhigh, radioButtonAscending, radioButtonDescending);
+
+            // We call the method to calculate whole inventory value
+            calculateinventoryValue();
+
+            // To sort our products in list view, event listener is added to toggle group
+            buttonGroup.selectedToggleProperty().addListener((p, o, n) -> {
+                if (p.getValue() == radioButtonPlhigh || p.getValue() == radioButtonPhlow) {
+                    sortCategoryPriceLowToHigh(listView.getItems());
                 }
-        );
-        // To get our products according to their category, event listener is added to combobox
-        comboBox.getSelectionModel().selectedItemProperty().addListener(
+                if (p.getValue() == radioButtonAscending || p.getValue() == radioButtonDescending) {
+                    sortCategoryToName(listView.getItems());
+                }
+            });
 
-            (observable, oldValue, newValue) -> {
-             //   Remove all items on the table before load new items regarding category
-             listView.getItems().removeAll(inventory.getAllProducts());
-                listView.getItems().addAll(inventory.getProductsWCategory(newValue));
-                calculateCategoryValue(listView.getItems());
+            // As a default radio button that sorts items according to price high to low is selected
+            radioButtonPhlow.setSelected(true);
 
-
-            }
-    );
-
-        // It makes each radiobutton to select seperately which means when we select one radio button it will deselect others
-        buttonGroup.getToggles().addAll(radioButtonPhlow,radioButtonPlhigh,radioButtonAscending,radioButtonDescending);
-
-        // We call the method to calculate whole inventory value
-       calculateinventoryValue();
-
-        // To sort our products in list view, event listener is added to toggle group
-        buttonGroup.selectedToggleProperty().addListener((p,o,n) -> {
-            if(p.getValue() == radioButtonPlhigh || p.getValue() == radioButtonPhlow){
-                sortCategoryPriceLowToHigh(listView.getItems());
-            }
-            if(p.getValue() == radioButtonAscending || p.getValue() == radioButtonDescending){
-                sortCategoryToName(listView.getItems());
-            }
-        });
-
-        // As a default radio button that sorts items according to price high to low is selected
-        radioButtonPhlow.setSelected(true);
 
 
     }
@@ -159,7 +170,7 @@ public class InventoryViewController implements Initializable{
                 int units = product.getNumberOfStock();
                 categoryValue += (units *price);
             }
-            String str = String.format("$%.2f", categoryValue);
+            String str = String.format("$%.0f", categoryValue);
             price.setText(str);
 
     }
@@ -168,14 +179,15 @@ public class InventoryViewController implements Initializable{
      * @param path
      */
     public void setImageView(Path path){
-        Image img = new Image(path.toString());
-        imageView.setImage(img);
+            Image img = new Image(path.toString());
+            imageView.setImage(img);
     }
 
     public void setDescriptionLabel(Product product){
         String str = product.getDescription();
+        Double unitPrice = product.getPrice();
+        unitprice.setText(String.valueOf(unitPrice)+" $");
         description.setText(str);
-
     }
 
 
@@ -191,9 +203,11 @@ public class InventoryViewController implements Initializable{
             int numberStrock = listView.getSelectionModel().getSelectedItem().getNumberOfStock();
             --numberStrock;
             listView.getSelectionModel().getSelectedItem().setNumberOfStock(numberStrock);
+            stockNumber.setText(String.valueOf(numberStrock));
             listView.refresh();
             calculateinventoryValue();
             calculateCategoryValue(listView.getItems());
+
         } else
             AlertController.alertError("There is no available item to sell.");
         throw new IllegalArgumentException("There is no available item to sell.");
@@ -206,9 +220,10 @@ public class InventoryViewController implements Initializable{
     public void calculateinventoryValue(){
         double totalInventory = inventory.getAllProducts()
                 .stream()
-                .mapToDouble(a -> a.getPrice() * a.getPrice())
+                .mapToDouble(a -> a.getPrice() * a.getNumberOfStock())
                 .sum();
-        calculatedinventoryValue.setText(String.valueOf(totalInventory));
+        String strDouble = String.format("$%.0f", totalInventory);
+        calculatedinventoryValue.setText(strDouble);
 
     }
 
@@ -216,17 +231,14 @@ public class InventoryViewController implements Initializable{
      * Runs after Create button is clicked
      */
     public void onCreateNewBtnPushed(ActionEvent event) throws IOException {
-        Parent createProductView = FXMLLoader.load(getClass().getResource("/Views/CreateProduct.fxml"));
-
-        Scene createProductScene = new Scene(createProductView);
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(createProductScene);
-        window.show();
+        SceneChanger.changeScene(event,"../Views/CreateProduct.fxml","dsd",inventory,null);
     }
 
 
+    @Override
+    public void preLoadData(Inventory inventory) {
 
+    }
 }
 
 

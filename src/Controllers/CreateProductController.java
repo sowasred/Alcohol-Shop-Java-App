@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.Inventory;
+import Models.Product;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,45 +19,45 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CreateProductController implements Initializable {
+public class CreateProductController implements Initializable,Preloader {
     @FXML TextField productName;
-    @FXML
-    TextField productDescription;
+    @FXML TextField productDescription;
     @FXML TextField numberOfStock;
-    @FXML
-    Label state;
+    @FXML Label state;
     @FXML TextField productPrice;
     @FXML TextField category;
-    @FXML
-    Button saveButton;
+    @FXML Button saveButton;
     @FXML Button cancelButton;
-    Inventory inventory;
+    private Inventory inventory;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        inventory = new Inventory();
     }
+
     /**
      * Saving the product that entered by user
      *
      */
-    public void saveButtonPushed(){
-
-        inventory.addProduct(productName.getText(), productDescription.getText(),Integer.valueOf(numberOfStock.getText()), Double.valueOf(productPrice.getText()),new File("/Images.default.jpg"), category.getText());
-        state.setText("Success!");
-
+    public void saveButtonPushed(ActionEvent event) throws IOException {
+        inventory.addProduct(productName.getText(),
+                productDescription.getText(),
+                Integer.valueOf(numberOfStock.getText()),
+                Double.valueOf(productPrice.getText()),
+                new File("/Images.default.jpg"),
+                category.getText());
+        SceneChanger.changeScene(event,"../Views/InventoryView.fxml","dsa",inventory,null);
     }
     /**
      * Going back to Inventory View
      */
     public void cancelBtnPushed(ActionEvent event) throws IOException {
-        Parent createProductView = FXMLLoader.load(getClass().getResource("/Views/InventoryView.fxml"));
+        SceneChanger.changeScene(event,"../Views/InventoryView.fxml","Yarrak",inventory,null);
+    }
 
-        Scene createProductScene = new Scene(createProductView);
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(createProductScene);
-        window.show();
+    @Override
+    public void preLoadData(Inventory inventory) {
+        this.inventory = inventory;
     }
 
 }

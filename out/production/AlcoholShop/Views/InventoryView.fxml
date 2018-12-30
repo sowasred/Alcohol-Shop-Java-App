@@ -14,7 +14,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="412.0">
                <children>
-                  <ListView fx:id="listView" layoutX="8.0" layoutY="83.0" prefHeight="256.0" prefWidth="461.0" />
+                  <ListView fx:id="listView" layoutX="7.0" layoutY="86.0" prefHeight="199.0" prefWidth="461.0" />
                   <Label layoutX="90.0" layoutY="14.0" prefHeight="57.0" prefWidth="297.0" text="ALCOHOL SHOP" textFill="#977676">
                      <font>
                         <Font name="Bernard MT Condensed" size="48.0" />
@@ -23,43 +23,66 @@
                   <ComboBox fx:id="comboBox" layoutX="154.0" layoutY="363.0" prefHeight="39.0" prefWidth="240.0" />
                   <Label layoutX="9.0" layoutY="363.0" prefHeight="39.0" prefWidth="162.0" text="Categories">
                      <font>
-                        <Font name="Bernard MT Condensed" size="24.0" />
+                        <Font name="Bell MT Bold" size="24.0" />
                      </font>
                   </Label>
                   <Label layoutX="9.0" layoutY="428.0" prefHeight="29.0" prefWidth="162.0" text="Sort Order">
                      <font>
-                        <Font name="Bernard MT Condensed" size="24.0" />
+                        <Font name="Bell MT Bold" size="24.0" />
                      </font>
                   </Label>
                   <RadioButton fx:id="radioButtonPhlow" layoutX="154.0" layoutY="432.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="184.0" text="Price high to low" />
                   <RadioButton fx:id="radioButtonPlhigh" layoutX="154.0" layoutY="474.0" mnemonicParsing="false" text="Price low to high" />
                   <RadioButton fx:id="radioButtonAscending" layoutX="154.0" layoutY="511.0" mnemonicParsing="false" text="Alphabetical Order(Ascending)" />
                   <RadioButton fx:id="radioButtonDescending" layoutX="154.0" layoutY="550.0" mnemonicParsing="false" text="Alphabetical Order(Descending)" />
+                  <Label layoutX="14.0" layoutY="308.0" text="Number Of Stock:">
+                     <font>
+                        <Font name="Bell MT Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="stockNumber" layoutX="182.0" layoutY="307.0" prefHeight="27.0" prefWidth="46.0" textFill="#ab0606">
+                     <font>
+                        <Font name="Bell MT Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="237.0" layoutY="308.0" text="Unit Price:">
+                     <font>
+                        <Font name="Bell MT Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="unitprice" layoutX="349.0" layoutY="307.0" prefHeight="27.0" prefWidth="96.0" textFill="#ab0606">
+                     <font>
+                        <Font name="Bell MT Bold" size="20.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="403.0">
                <children>
                   <ImageView fx:id="imageView" fitHeight="199.0" fitWidth="279.0" layoutX="17.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
                   <Button fx:id="" layoutX="24.0" layoutY="377.0" mnemonicParsing="false" onAction="#sellUnit" text="Sell 1 Unit" />
-                  <Label layoutX="47.0" layoutY="503.0" prefHeight="27.0" prefWidth="200.0" text="Total Inventory Value:">
+                  <Label layoutX="23.0" layoutY="510.0" prefHeight="27.0" prefWidth="230.0" text="Total Inventory Value:">
                      <font>
-                        <Font name="System Bold" size="18.0" />
+                        <Font name="Bell MT Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="calculatedinventoryValue" layoutX="47.0" layoutY="537.0" prefHeight="27.0" prefWidth="184.0">
+                  <Label fx:id="calculatedinventoryValue" layoutX="23.0" layoutY="543.0" prefHeight="27.0" prefWidth="184.0">
                      <font>
                         <Font name="Arial Black" size="22.0" />
                      </font></Label>
-                  <Label layoutX="44.0" layoutY="442.0" text="Total Category Value:">
+                  <Label layoutX="17.0" layoutY="444.0" text="Total Category Value:">
                      <font>
-                        <Font name="System Bold" size="18.0" />
+                        <Font name="Bell MT Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="price" layoutX="47.0" layoutY="469.0" prefHeight="27.0" prefWidth="184.0">
+                  <Label fx:id="price" layoutX="23.0" layoutY="469.0" prefHeight="27.0" prefWidth="184.0">
                      <font>
                         <Font name="Arial Black" size="22.0" />
                      </font></Label>
-                  <Label fx:id="description" layoutX="14.0" layoutY="226.0" prefHeight="126.0" prefWidth="286.0" />
+                  <Label fx:id="description" layoutX="14.0" layoutY="226.0" prefHeight="126.0" prefWidth="286.0" wrapText="true">
+                     <font>
+                        <Font name="Bell MT Bold" size="22.0" />
+                     </font></Label>
                   <Button fx:id="createProB" layoutX="157.0" layoutY="377.0" mnemonicParsing="false" onAction="#onCreateNewBtnPushed" text="Create Product" />
                </children>
             </AnchorPane>
